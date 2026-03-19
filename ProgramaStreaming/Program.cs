@@ -16,6 +16,7 @@ do
         switch (opcion)
         {
             case 1:
+                Console.Clear();
                 Console.WriteLine("opcion 1");
                 break;
             case 2:
@@ -28,9 +29,12 @@ do
 
                 break;
             case 5:
+                Console.Clear();
                 Console.WriteLine("Saliendo del programa...");
+                Console.ReadKey();
                 break;
             default:
+                Console.Clear();
                 Console.WriteLine("Opción no válida. Por favor, elige una opción del menú.");
                 break;
         }
@@ -38,6 +42,7 @@ do
     }
     else
     {
+        Console.Clear();
         Console.WriteLine("Entrada no válida. Por favor, ingresa un número.");
 
     }
