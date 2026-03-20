@@ -1,8 +1,42 @@
-﻿void Menu()
+﻿// funciones
+void Menu()
 {
     Console.WriteLine("Menú: \n1. Evaluar nuevo contenido\n2. Mostrar reglas del sistema\n3. Mostrar estadisticas de inicio de sesion\n4. Reiniciar estadisticas \n5. Salir");
     
 }
+void Reglas()
+{
+    Console.WriteLine(" Reglas de clasificación y horario\r\n• Todo público: cualquier hora\r\n• +13: entre 6 y 22 horas\r\n• +18: entre 22 y 5 horas\r\nReglas de duración por tipo\r\n• Película: 60–180 minutos\r\n• Serie: 20–90 minutos\r\n• Documental: 30–120 minutos\r\n• Evento en vivo: 30–240 minutos\r\n\r\nReglas de producción\r\n• Producción baja solo válida para Todo público o +13\r\n• Producción media o alta válida para cualquier clasificación\r\n");
+}
+void ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificacion, int HoraProgramada, int NivelProduccion)
+{
+    bool ClasificacionHorario(int Clasificacion, int HoraProgramada)
+    {
+        if (Clasificacion == 1 && HoraProgramada >= 6 && HoraProgramada <= 22)
+        {
+            return true;
+        }
+        else if (Clasificacion == 2 && HoraProgramada >= 8 && HoraProgramada <= 23)
+        {
+            return true;
+        }
+        else if (Clasificacion == 3 && (HoraProgramada >= 22 || HoraProgramada <= 5))
+        {
+            return true;
+        }
+        return false;
+    }
+   
+}
+
+
+// variables globales
+int totalEvaluaciones = 0;
+int publicados = 0;
+int rechazados = 0;
+int enRevision = 0;
+int impactoProdeminante = 0;
+double porcentajeAprobacion = 0;
 
 
 int opcion;
@@ -17,7 +51,7 @@ do
         {
             case 1:
                 Console.Clear();
-                int tipoContenido;
+                int tipoContenido = 0;
                 bool entradaValida = false;
 
                 while (!entradaValida)
@@ -31,7 +65,7 @@ do
                         Console.WriteLine("Opción inválida. Elige entre 1 y 4.\n");
                     }
                 }
-                double duracionMinutos;
+                double duracionMinutos = 0;
                 bool entradaValida2 = false;
 
                 while (!entradaValida2)
@@ -45,7 +79,7 @@ do
                         Console.WriteLine("Ingrese una cifra en minutos valida\n");
                     }
                 }
-                int clasificacion;
+                int clasificacion = 0;
                 bool entradaValida3 = false;
 
                 while (!entradaValida3)
@@ -60,7 +94,7 @@ do
                     }
 
                 }
-                int horaProgramada;
+                int horaProgramada = 0;
                 bool entradaValida4 = false;
           
                 while (!entradaValida4)
@@ -74,7 +108,7 @@ do
                         Console.WriteLine("Opción inválida. Elija un horario valido.\n");
                     }
                 }
-                int nivelProduccion;
+                int nivelProduccion = 0;
                 bool entradaValida5 = false;
 
                 while (!entradaValida5)
@@ -90,15 +124,26 @@ do
                 }
                 Console.Clear();
 
+                ValidacionTecnica(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion);
+
 
                 break;
             case 2:
-
+                Reglas();
                 break;
             case 3:
-
+                Console.Clear();
+                Console.WriteLine($"Total evaluados: {totalEvaluaciones}\nPublicados: {publicados}\nRechazados: {rechazados}\nEn revisión: {enRevision}\nImpacto predominante: {impactoProdeminante}\nPorcentaje de aprobación: {porcentajeAprobacion}");
                 break;
             case 4:
+                Console.Clear();
+                Console.WriteLine("Estadisticas reiniciadas");
+                totalEvaluaciones = 0;
+                publicados = 0;
+                rechazados = 0;
+                enRevision = 0;
+                impactoProdeminante = 0;
+                porcentajeAprobacion = 0;
 
                 break;
             case 5:
