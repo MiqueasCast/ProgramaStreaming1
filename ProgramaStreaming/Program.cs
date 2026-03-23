@@ -4,11 +4,71 @@ void Menu()
     Console.WriteLine("Menú: \n1. Evaluar nuevo contenido\n2. Mostrar reglas del sistema\n3. Mostrar estadisticas de inicio de sesion\n4. Reiniciar estadisticas \n5. Salir");
     
 }
+void ReglasDuracion(int duracionm)
+{
+    switch (duracionm)
+    {
+        case 1:
+            Console.WriteLine("Película.\nRecuerda que para que el contenido sea aceptado debe estar en el rango de 60–180 minutos.");
+            break;
+        case 2:
+            Console.WriteLine("Serie.\nRecuerda que para que el contenido sea aceptado debe estar en el rango de 20–90 minutos.");
+            break;
+        case 3:
+            Console.WriteLine("Documental.\nRecuerda que para que el contenido sea aceptado debe estar en el rango de 30–120 minutos.");
+            break;
+        case 4:
+            Console.WriteLine("Evento en vivo.\nRecuerda que para que el contenido sea aceptado debe estar en el rango de 30–240 minutos.");
+            break;
+    }
+}
+void clasificacionHora(int clasificacíon)
+{
+    switch (clasificacíon)
+    {
+        case 1:
+            Console.WriteLine("Ingrese hora programada en el rango de 0-23 horas");
+            break;
+        case 2:
+            Console.WriteLine("Recuerda que para que el contenido sea aceptado debe programarse entre las 6 y las 22 horas.");
+            break;
+        case 3:
+            Console.WriteLine("Recuerda que para que el contenido sea aceptado debe programarse entre las 22 y las 5 horas.");
+            break;
+    }
+}
+void ReglasProduccion(int nivelProduccion)
+{
+    if (nivelProduccion == 1 || nivelProduccion == 2)
+    {
+        Console.WriteLine("Recuerde que la clasificación elegida solo acepta producción baja");
+    }
+}
 void Reglas()
 {
-    Console.WriteLine(" Reglas de clasificación y horario\r\n• Todo público: cualquier hora\r\n• +13: entre 6 y 22 horas\r\n• +18: entre 22 y 5 horas\r\n" +
-        "Reglas de duración por tipo\r\n• Película: 60–180 minutos\r\n• Serie: 20–90 minutos\r\n• Documental: 30–120 minutos\r\n• Evento en vivo: 30–240 minutos\r\n\r\n" +
-        "Reglas de producción\r\n• Producción baja solo válida para Todo público o +13\r\n• Producción media o alta válida para cualquier clasificación\r\n");
+    Console.Clear();
+
+    Console.WriteLine("==========================================");
+    Console.WriteLine("        REGLAS DE CLASIFICACION");
+    Console.WriteLine("==========================================\n");
+
+    Console.WriteLine("Horarios permitidos:");
+    Console.WriteLine("- Todo publico  : cualquier hora");
+    Console.WriteLine("- +13           : entre 6 y 22 horas");
+    Console.WriteLine("- +18           : entre 22 y 5 horas\n");
+
+    Console.WriteLine("Duracion por tipo de contenido:");
+    Console.WriteLine("- Pelicula        : 60-180 minutos");
+    Console.WriteLine("- Serie           : 20-90 minutos");
+    Console.WriteLine("- Documental      : 30-120 minutos");
+    Console.WriteLine("- Evento en vivo  : 30-240 minutos\n");
+
+    Console.WriteLine("Reglas de produccion:");
+    Console.WriteLine("- Produccion baja   : solo valida para Todo publico o +13");
+    Console.WriteLine("- Produccion media  : valida para cualquier clasificacion");
+    Console.WriteLine("- Produccion alta   : valida para cualquier clasificacion\n");
+
+    Console.WriteLine("==========================================");
 }
 bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificacion, int HoraProgramada, int NivelProduccion)
 {
@@ -23,7 +83,7 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
             return true;
 
         }
-        else if (Clasificacion == 3 && (HoraProgramada >= 22 && HoraProgramada <= 5))
+        else if (Clasificacion == 3 && (HoraProgramada >= 5 && HoraProgramada <= 22))
         {
             return true;
         }
@@ -55,7 +115,7 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
         {
             return true;
         }
-        else if ((NivelProduccion == 2 || NivelProduccion == 3) && (Clasificacion >= 1 && Clasificacion <= 3))
+        else if (NivelProduccion == 2 || NivelProduccion == 3 && (Clasificacion == 1 || Clasificacion == 2 || Clasificacion == 3))
         {
             return true;
         }
@@ -117,7 +177,9 @@ do
 
                 while (!entradaValida2)
                 {
-                    Console.Write("Duracion en minutos: \n> ");
+                    Console.Clear();
+                    ReglasDuracion(tipoContenido);
+                    Console.Write("> ");
                     entradaValida2 = double.TryParse(Console.ReadLine(), out duracionMinutos) && duracionMinutos > 0 && duracionMinutos <= 240;
 
                     if (!entradaValida2)
@@ -131,6 +193,7 @@ do
 
                 while (!entradaValida3)
                 {
+                    Console.Clear();
                     Console.Write("Clasificacion: \n1. Todo publico\n2. +13\n3. +18\n> ");
                     entradaValida3 = int.TryParse(Console.ReadLine(), out clasificacion) && clasificacion >= 1 && clasificacion <= 3;
 
@@ -146,7 +209,8 @@ do
           
                 while (!entradaValida4)
                 {
-                    Console.Write("Hora programda: (0-23)\n> ");
+                    clasificacionHora(clasificacion);
+                    Console.Write("> ");
                     entradaValida4 = int.TryParse(Console.ReadLine(), out horaProgramada) && horaProgramada >= 0 && horaProgramada <= 23;
 
                     if (!entradaValida4)
@@ -160,6 +224,7 @@ do
 
                 while (!entradaValida5)
                 {
+                    ReglasProduccion(clasificacion);
                     Console.Write("Nivel de producción:\n1. Bajo\n2. Medio\n3. Alto\n> ");
                     entradaValida5 = int.TryParse(Console.ReadLine(), out nivelProduccion) && nivelProduccion >= 1 && nivelProduccion <= 3;
 
@@ -177,23 +242,22 @@ do
                 {
 
                     Console.WriteLine("Felicidades su contenido aprobo la validación tecnica, presione enter para continuar: \n>");
-                    //if (nivelProduccion == 3 || duracionMinutos > 120 || horaProgramada >= 20 & horaProgramada <= 23)
-                    //{
-                    //    Console.WriteLine("El contenido cumple con los requisitos técnicos pero requiere revisión adicional.");
-                    //    enRevision++;
+                    if (nivelProduccion == 3 || duracionMinutos > 120 || horaProgramada >= 20 & horaProgramada <= 23)
+                    {
+                        Console.WriteLine("El contenido cumple con los requisitos técnicos pero requiere revisión adicional.");
+                        enRevision++;
 
-                    //}
-                    //else if (nivelProduccion == 2 || duracionMinutos > 60 && duracionMinutos <= 120)
-                    //{
-                    //    Console.WriteLine("El contenido ha sido aprobado y publicado en la plataforma.");
-                    //    publicados++;
-                    //}
-                    //else if (nivelProduccion == 1 && duracionMinutos <= 60)
-
-                    //{
-                    //    Console.WriteLine("El contenido ha sido aprobado y publicado en la plataforma.");
-                    //    publicados++;
-                    //}
+                    }
+                    else if (nivelProduccion == 2 || duracionMinutos > 60 && duracionMinutos <= 120)
+                    {
+                        Console.WriteLine("El contenido ha sido aprobado y publicado en la plataforma.");
+                        publicados++;
+                    }
+                    else if (nivelProduccion == 1 && duracionMinutos <= 60)
+                    {
+                        Console.WriteLine("El contenido ha sido aprobado y publicado en la plataforma.");
+                        publicados++;
+                    }
                 }
                 else
                 {
