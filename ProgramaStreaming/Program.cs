@@ -89,7 +89,6 @@ void Resumen(int TipoContenido, double DuracionMinutos, int Clasificacion,
     {
         Console.WriteLine("Nivel de producción: Alto");
     }
-
     Console.WriteLine("═════════════════════════════════════════════");
     Console.WriteLine($"Decisión:            {decision}");
     Console.WriteLine($"Razón:               {razon}");
@@ -112,15 +111,15 @@ string ClasificacionImpacto(int impactoAlto, int impactoMedio, int impactoBajo)
     }
     else if (impactoAlto >= impactoMedio && impactoAlto >= impactoBajo)
     {
-        return "Impacto Alto";
+        return "Alto";
     }
     else if (impactoMedio >= impactoAlto && impactoMedio >= impactoBajo)
     {
-        return "Impacto Medio";
+        return "Medio";
     }
     else
     {
-        return "Impacto Bajo";
+        return "Bajo";
     }
 }
 double PorcentajeAprobacion(int total, int aprobados)
@@ -173,10 +172,8 @@ void ReglasProduccion(int clasificacion)
         Console.WriteLine("Recuerda que para clasificación +18 no se permite producción baja\n");
     }
 }
-
-
 // función para validación de reglas
-bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificacion, int HoraProgramada, int NivelProduccion, out string razon)
+bool ValidacionTecnica(int TipoContenido, int DuracionMinutos, int Clasificacion, int HoraProgramada, int NivelProduccion, out string razon)
 {
     bool ClasificacionHorario(int Clasificacion, int HoraProgramada)
     {
@@ -187,7 +184,6 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
         else if (Clasificacion == 2 && (HoraProgramada >= 6 && HoraProgramada <= 22))
         {
             return true;
-
         }
         else if (Clasificacion == 3 && (HoraProgramada >= 22 || HoraProgramada <= 5))
         {
@@ -229,7 +225,7 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
     }
     if (!ClasificacionHorario(Clasificacion, HoraProgramada))
     {
-        razon = "Horario no permitido para esa clasificación";
+        razon = "Horario no permitido \npara esa clasificación";
         return false;
     }
     if (!DuracionValida(TipoContenido, DuracionMinutos))
@@ -239,7 +235,7 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
     }
     if (!ProduccionValida(NivelProduccion, Clasificacion))
     {
-        razon = "Nivel de producción no válido para esa clasificación";
+        razon = "Nivel de producción no válido \npara esa clasificación";
         return false;
     }
     razon = "Cumple todas las reglas técnicas";
@@ -272,14 +268,14 @@ do
                 }
 
                 Console.Clear();
-                double duracionMinutos = 0;
+                int duracionMinutos = 0;
                 bool entradaValida2 = false;
                 while (!entradaValida2)
                 {
                     Console.Clear();
                     ReglasDuracion(tipoContenido);
-                    Console.Write("Ingrese la duración:  ");
-                    entradaValida2 = double.TryParse(Console.ReadLine(), out duracionMinutos) && duracionMinutos > 0 && duracionMinutos <= 240;
+                    Console.Write("Ingrese la duración: ");
+                    entradaValida2 = int.TryParse(Console.ReadLine(), out duracionMinutos) && duracionMinutos > 0 && duracionMinutos <= 240;
                     if (!entradaValida2)
                     {
                         Console.Clear();
@@ -309,7 +305,7 @@ do
                 while (!entradaValida4)
                 {
                     clasificacionHora(clasificacion);
-                    Console.Write("Ingrese horario:  ");
+                    Console.Write("Ingrese horario: ");
                     entradaValida4 = int.TryParse(Console.ReadLine(), out horaProgramada) && horaProgramada >= 0 && horaProgramada <= 23;
                     if (!entradaValida4)
                     {
@@ -349,9 +345,13 @@ do
                     {
                         nivelImpacto = 2;
                     }
-                    else
+                    else if (nivelProduccion == 1 &&  duracionMinutos <60)
                     {
                         nivelImpacto = 1;
+                    }
+                    else
+                    {
+                        nivelImpacto = 2;
                     }
 
                     if (nivelImpacto == 3)
@@ -359,12 +359,6 @@ do
                         Resumen(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion, "Enviar a revisión", "Impacto Alto");
                         enRevision++;
                         impactoAlto++;
-                    }
-                    else if (nivelImpacto == 2 && (horaProgramada >= 18 || duracionMinutos >= 100))
-                    {
-                        Resumen(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion, "Publicar con ajustes", "Impacto Medio — se recomienda ajustar horario o duración");
-                        publicados++;
-                        impactoMedio++;
                     }
                     else if (nivelImpacto == 2)
                     {
@@ -374,7 +368,7 @@ do
                     }
                     else
                     {
-                        Resumen(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion,  "Publicar", "Impacto Bajo, cumple todas las reglas");
+                        Resumen(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion, "Publicar", "Impacto Bajo, cumple todas las reglas");
                         publicados++;
                         impactoBajo++;
                     }
