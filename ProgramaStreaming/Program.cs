@@ -1,9 +1,130 @@
-﻿// funciones
+﻿// variables globales
+int totalEvaluaciones = 0;
+int publicados = 0;
+int rechazados = 0;
+int enRevision = 0;
+
+double porcentajeAprobacion = 0;
+int impactoAlto = 0;
+int impactoMedio = 0;
+int impactoBajo = 0;
+
+// funciones
+void Resumen(int TipoContenido, double DuracionMinutos, int Clasificacion,
+             int HoraProgramada, int NivelProduccion,
+             string decision, string razon)
+{
+    Console.WriteLine("\n═══════════ RESUMEN DE EVALUACIÓN ═══════════");
+
+    if (TipoContenido == 1)
+    {
+        Console.WriteLine("Tipo de contenido:   Película");
+    }
+    else if (TipoContenido == 2)
+    {
+        Console.WriteLine("Tipo de contenido:   Serie");
+    }
+    else if (TipoContenido == 3)
+    {
+        Console.WriteLine("Tipo de contenido:   Documental");
+    }
+    else if (TipoContenido == 4)
+    {
+        Console.WriteLine("Tipo de contenido:   Evento en vivo");
+    }
+
+    Console.WriteLine($"Duración:            {DuracionMinutos} minutos");
+
+    if (Clasificacion == 1)
+    {
+        Console.WriteLine("Clasificación:       Todo público");
+    }
+    else if (Clasificacion == 2)
+    {
+        Console.WriteLine("Clasificación:       +13");
+    }
+    else if (Clasificacion == 3)
+    {
+        Console.WriteLine("Clasificación:       +18");
+    }
+
+    Console.WriteLine($"Hora programada:     {HoraProgramada}:00");
+
+    if (NivelProduccion == 1)
+    {
+        Console.WriteLine("Nivel de producción: Bajo");
+    }
+    else if (NivelProduccion == 2)
+    {
+        Console.WriteLine("Nivel de producción: Medio");
+    }
+    else if (NivelProduccion == 3)
+    {
+        Console.WriteLine("Nivel de producción: Alto");
+    }
+
+    Console.WriteLine("─────────────────────────────────────────────");
+    Console.WriteLine($"Decisión:            {decision}");
+    Console.WriteLine($"Razón:               {razon}");
+    Console.WriteLine("═════════════════════════════════════════════\n");
+}
 void Menu()
 {
     Console.WriteLine("Menú: \n1. Evaluar nuevo contenido\n2. Mostrar reglas del sistema\n3. Mostrar estadisticas de inicio de sesion\n4. Reiniciar estadisticas \n5. Salir");
     
 }
+void Reglas()
+{
+    Console.Clear();
+
+    Console.WriteLine("══════════════════ REGLAS DE CLASIFICACION ══════════════════\n");
+
+    Console.WriteLine("Horarios permitidos:");
+    Console.WriteLine("- Todo publico  : cualquier hora");
+    Console.WriteLine("- +13           : entre 6 y 22 horas");
+    Console.WriteLine("- +18           : entre 22 y 5 horas\n");
+
+    Console.WriteLine("Duracion por tipo de contenido:");
+    Console.WriteLine("- Pelicula        : 60-180 minutos");
+    Console.WriteLine("- Serie           : 20-90 minutos");
+    Console.WriteLine("- Documental      : 30-120 minutos");
+    Console.WriteLine("- Evento en vivo  : 30-240 minutos\n");
+
+    Console.WriteLine("Reglas de produccion:");
+    Console.WriteLine("- Produccion baja   : solo valida para Todo publico o +13");
+    Console.WriteLine("- Produccion media  : valida para cualquier clasificacion");
+    Console.WriteLine("- Produccion alta   : valida para cualquier clasificacion\n");
+
+    Console.WriteLine("═════════════════════════════════════════════════════════════");
+}
+string ClasificacionImpacto(int impactoAlto, int impactoMedio, int impactoBajo)
+{
+    if (impactoAlto > impactoMedio && impactoAlto > impactoBajo)
+    {
+        return "Impacto Alto";
+    }
+    else if (impactoMedio > impactoAlto && impactoMedio > impactoBajo)
+    {
+        return  "Impacto Medio";
+    }
+    else if (impactoBajo > impactoAlto && impactoBajo > impactoMedio)
+    {
+        return  "Impacto Bajo";
+    }
+    else
+    {
+        return  "Sin datos"; 
+    }
+}
+double PorcentajeAprobacion(int total, int aprobados)
+{
+    if (total == 0)
+    {
+        return porcentajeAprobacion = 0;
+    }
+    return porcentajeAprobacion = (double)aprobados / total * 100;
+}
+
 void ReglasDuracion(int duracionm)
 {
     switch (duracionm)
@@ -44,33 +165,10 @@ void ReglasProduccion(int nivelProduccion)
         Console.WriteLine("Recuerde que la clasificación elegida solo acepta producción baja");
     }
 }
-void Reglas()
-{
-    Console.Clear();
 
-    Console.WriteLine("==========================================");
-    Console.WriteLine("        REGLAS DE CLASIFICACION");
-    Console.WriteLine("==========================================\n");
 
-    Console.WriteLine("Horarios permitidos:");
-    Console.WriteLine("- Todo publico  : cualquier hora");
-    Console.WriteLine("- +13           : entre 6 y 22 horas");
-    Console.WriteLine("- +18           : entre 22 y 5 horas\n");
-
-    Console.WriteLine("Duracion por tipo de contenido:");
-    Console.WriteLine("- Pelicula        : 60-180 minutos");
-    Console.WriteLine("- Serie           : 20-90 minutos");
-    Console.WriteLine("- Documental      : 30-120 minutos");
-    Console.WriteLine("- Evento en vivo  : 30-240 minutos\n");
-
-    Console.WriteLine("Reglas de produccion:");
-    Console.WriteLine("- Produccion baja   : solo valida para Todo publico o +13");
-    Console.WriteLine("- Produccion media  : valida para cualquier clasificacion");
-    Console.WriteLine("- Produccion alta   : valida para cualquier clasificacion\n");
-
-    Console.WriteLine("==========================================");
-}
-bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificacion, int HoraProgramada, int NivelProduccion)
+// función para validación de reglas
+bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificacion, int HoraProgramada, int NivelProduccion, out string razon)
 {
     bool ClasificacionHorario(int Clasificacion, int HoraProgramada)
     {
@@ -83,7 +181,7 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
             return true;
 
         }
-        else if (Clasificacion == 3 && (HoraProgramada >= 5 && HoraProgramada <= 22))
+        else if (Clasificacion == 3 && (HoraProgramada >= 22 || HoraProgramada <= 5))
         {
             return true;
         }
@@ -115,7 +213,7 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
         {
             return true;
         }
-        else if (NivelProduccion == 2 || NivelProduccion == 3 && (Clasificacion == 1 || Clasificacion == 2 || Clasificacion == 3))
+        else if ((NivelProduccion == 2 || NivelProduccion == 3) && (Clasificacion >= 1 && Clasificacion <= 3))
         {
             return true;
         }
@@ -123,28 +221,25 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
     }
 
 
-    if (ClasificacionHorario(Clasificacion, HoraProgramada) &&
-        DuracionValida(TipoContenido, DuracionMinutos) &&
-        ProduccionValida(NivelProduccion, Clasificacion))
+    if (!ClasificacionHorario(Clasificacion, HoraProgramada))
     {
-        return true; 
+        razon = "Horario no permitido para esa clasificación";
+        return false;
     }
-    else
+    if (!DuracionValida(TipoContenido, DuracionMinutos))
     {
-        return false; 
+        razon = "Duración fuera del rango permitido";
+        return false;
     }
+    if (!ProduccionValida(NivelProduccion, Clasificacion))
+    {
+        razon = "Nivel de producción no válido para esa clasificación";
+        return false;
+    }
+    razon = "Cumple todas las reglas técnicas";
+    return true;
 
 }
-
-
-// variables globales
-int totalEvaluaciones = 0;
-int publicados = 0;
-int rechazados = 0;
-int enRevision = 0;
-int impactoProdeminante = 0;
-double porcentajeAprobacion = 0;
-
 
 int opcion;
 bool esNumero;
@@ -236,42 +331,58 @@ do
                 }
                 Console.Clear();
 
-                bool respuesta = ValidacionTecnica(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion);
+                bool respuesta = ValidacionTecnica(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion, out string razon);
 
+           
                 if (respuesta == true)
                 {
-
-                    Console.WriteLine("Felicidades su contenido aprobo la validación tecnica, presione enter para continuar: \n>");
-                    if (nivelProduccion == 3 || duracionMinutos > 120 || horaProgramada >= 20 & horaProgramada <= 23)
+                    if (nivelProduccion == 3 || duracionMinutos > 120 || (horaProgramada >= 20 && horaProgramada <= 23))
                     {
-                        Console.WriteLine("El contenido cumple con los requisitos técnicos pero requiere revisión adicional.");
+                        Resumen(tipoContenido, duracionMinutos, clasificacion,
+        horaProgramada, nivelProduccion, "Enviar a revisión", "Impacto Alto");
                         enRevision++;
+                        impactoAlto++;
 
                     }
-                    else if (nivelProduccion == 2 || duracionMinutos > 60 && duracionMinutos <= 120)
+                    else if (nivelProduccion == 2 || (duracionMinutos >= 60 && duracionMinutos <= 120))
                     {
-                        Console.WriteLine("El contenido ha sido aprobado y publicado en la plataforma.");
+                        Resumen(tipoContenido, duracionMinutos, clasificacion,
+                        horaProgramada, nivelProduccion, "Publicar", "Impacto Medio, cumple todas las reglas");
+                        impactoMedio++;
                         publicados++;
                     }
                     else if (nivelProduccion == 1 && duracionMinutos <= 60)
                     {
-                        Console.WriteLine("El contenido ha sido aprobado y publicado en la plataforma.");
+                        Resumen(tipoContenido, duracionMinutos, clasificacion,
+                        horaProgramada, nivelProduccion, "Publicar", "Impacto Bajo, cumple todas las reglas");
                         publicados++;
+                        impactoBajo++;
                     }
                 }
                 else
                 {
-                    Console.WriteLine("El contenido no cumple con los requisitos técnicos y ha sido rechazado.");
+
+                    Resumen(tipoContenido, duracionMinutos, clasificacion,
+                    horaProgramada, nivelProduccion, "Rechazar", razon);
                     rechazados++;
                 }
-
+                totalEvaluaciones++;
                 break;
             case 2:
+                Console.Clear();
                 Reglas();
                 break;
             case 3:
                 Console.Clear();
-                Console.WriteLine($"Total evaluados: {totalEvaluaciones}\nPublicados: {publicados}\nRechazados: {rechazados}\nEn revisión: {enRevision}\nImpacto predominante: {impactoProdeminante}\nPorcentaje de aprobación: {porcentajeAprobacion}");
+                if (totalEvaluaciones == 0)
+                {
+                    Console.WriteLine("No se han ingresado datos aun.\n");
+                }
+                else
+                {
+                    Console.WriteLine($"Total evaluados: {totalEvaluaciones}\nPublicados: {publicados}\nRechazados: {rechazados}\nEn revisión: {enRevision}\nImpacto predominante: {ClasificacionImpacto(impactoAlto, impactoMedio, impactoBajo)}\nPorcentaje de aprobación: {PorcentajeAprobacion(totalEvaluaciones, publicados)}");
+                }
+               
                 break;
             case 4:
                 Console.Clear();
@@ -280,13 +391,15 @@ do
                 publicados = 0;
                 rechazados = 0;
                 enRevision = 0;
-                impactoProdeminante = 0;
                 porcentajeAprobacion = 0;
 
                 break;
             case 5:
                 Console.Clear();
                 Console.WriteLine("Saliendo del programa...");
+                Console.WriteLine($"Resumen de hoy:");
+                Console.WriteLine($"Total evaluados: {totalEvaluaciones}\nPublicados: {publicados}\nRechazados: {rechazados}\nEn revisión: {enRevision}\nImpacto predominante: {ClasificacionImpacto(impactoAlto, impactoMedio, impactoBajo)}\nPorcentaje de aprobación: {PorcentajeAprobacion(totalEvaluaciones, publicados)}");
+                Console.WriteLine($"Presione cualqueir tecla para salir.");
                 Console.ReadKey();
                 break;
             default:
