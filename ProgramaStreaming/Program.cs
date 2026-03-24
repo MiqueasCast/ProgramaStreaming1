@@ -3,13 +3,40 @@ int totalEvaluaciones = 0;
 int publicados = 0;
 int rechazados = 0;
 int enRevision = 0;
-
 double porcentajeAprobacion = 0;
 int impactoAlto = 0;
 int impactoMedio = 0;
 int impactoBajo = 0;
 
 // funciones
+void Menu()
+{
+    Console.Write("Menú: \n1. Evaluar nuevo contenido\n2. Mostrar reglas del sistema\n3. Mostrar estadisticas de inicio de sesion\n4. Reiniciar estadisticas \n5. Salir\n>");
+}
+void Reglas()
+{
+    Console.Clear();
+
+    Console.WriteLine("══════════════════ REGLAS DE CLASIFICACION ══════════════════\n");
+
+    Console.WriteLine("Horarios permitidos:");
+    Console.WriteLine("- Todo publico  : cualquier hora");
+    Console.WriteLine("- +13           : entre 6 y 22 horas");
+    Console.WriteLine("- +18           : entre 22 y 5 horas\n");
+
+    Console.WriteLine("Duracion por tipo de contenido:");
+    Console.WriteLine("- Pelicula        : 60-180 minutos");
+    Console.WriteLine("- Serie           : 20-90 minutos");
+    Console.WriteLine("- Documental      : 30-120 minutos");
+    Console.WriteLine("- Evento en vivo  : 30-240 minutos\n");
+
+    Console.WriteLine("Reglas de produccion:");
+    Console.WriteLine("- Produccion baja   : solo valida para Todo publico o +13");
+    Console.WriteLine("- Produccion media  : valida para cualquier clasificacion");
+    Console.WriteLine("- Produccion alta   : valida para cualquier clasificacion\n");
+
+    Console.WriteLine("═════════════════════════════════════════════════════════════");
+}
 void Resumen(int TipoContenido, double DuracionMinutos, int Clasificacion,
              int HoraProgramada, int NivelProduccion,
              string decision, string razon)
@@ -68,34 +95,14 @@ void Resumen(int TipoContenido, double DuracionMinutos, int Clasificacion,
     Console.WriteLine($"Razón:               {razon}");
     Console.WriteLine("═════════════════════════════════════════════\n");
 }
-void Menu()
+void Estadisticas()
 {
-    Console.Write("Menú: \n1. Evaluar nuevo contenido\n2. Mostrar reglas del sistema\n3. Mostrar estadisticas de inicio de sesion\n4. Reiniciar estadisticas \n5. Salir\n>");
-    
-}
-void Reglas()
-{
-    Console.Clear();
-
-    Console.WriteLine("══════════════════ REGLAS DE CLASIFICACION ══════════════════\n");
-
-    Console.WriteLine("Horarios permitidos:");
-    Console.WriteLine("- Todo publico  : cualquier hora");
-    Console.WriteLine("- +13           : entre 6 y 22 horas");
-    Console.WriteLine("- +18           : entre 22 y 5 horas\n");
-
-    Console.WriteLine("Duracion por tipo de contenido:");
-    Console.WriteLine("- Pelicula        : 60-180 minutos");
-    Console.WriteLine("- Serie           : 20-90 minutos");
-    Console.WriteLine("- Documental      : 30-120 minutos");
-    Console.WriteLine("- Evento en vivo  : 30-240 minutos\n");
-
-    Console.WriteLine("Reglas de produccion:");
-    Console.WriteLine("- Produccion baja   : solo valida para Todo publico o +13");
-    Console.WriteLine("- Produccion media  : valida para cualquier clasificacion");
-    Console.WriteLine("- Produccion alta   : valida para cualquier clasificacion\n");
-
-    Console.WriteLine("═════════════════════════════════════════════════════════════");
+    Console.WriteLine($"Total evaluados          : {totalEvaluaciones}");
+    Console.WriteLine($"Publicados               : {publicados}");
+    Console.WriteLine($"Rechazados               : {rechazados}");
+    Console.WriteLine($"En revisión              : {enRevision}");
+    Console.WriteLine($"Impacto predominante     : {ClasificacionImpacto(impactoAlto, impactoMedio, impactoBajo)}");
+    Console.WriteLine($"Porcentaje de aprobación : {PorcentajeAprobacion(totalEvaluaciones, publicados):F2}%");
 }
 string ClasificacionImpacto(int impactoAlto, int impactoMedio, int impactoBajo)
 {
@@ -124,14 +131,13 @@ double PorcentajeAprobacion(int total, int aprobados)
     }
     return porcentajeAprobacion = (double)aprobados / total * 100;
 }
-
 void ReglasDuracion(int duracionm)
 {
     switch (duracionm)
     {
         case 1:
-            Console.WriteLine("═══════════  Película ═══════════" +
-                "\nRecuerda que para que el contenido sea aceptado debe estar en el rango de 60–180 minutos.\n");
+            Console.WriteLine("════════════════════  Película ════════════════════" +
+                "\nRecuerda que para que el contenido sea aceptado\ndebe estar en el rango de 60–180 minutos.\n");
             break;
         case 2:
             Console.WriteLine("═══════════  Serie  ═══════════" +
@@ -153,10 +159,10 @@ void clasificacionHora(int clasificacíon)
             Console.WriteLine("Ingrese hora programada en el rango de 0-23 horas\n");
             break;
         case 2:
-            Console.WriteLine("Recuerda que para que el contenido sea aceptado debe programarse entre las 6 y las 22 horas.\n");
+            Console.WriteLine("Recuerda que para que el contenido sea aceptado \ndebe programarse entre las 6 y las 22 horas.\n");
             break;
         case 3:
-            Console.WriteLine("Recuerda que para que el contenido sea aceptado debe programarse entre las 22 y las 5 horas.\n");
+            Console.WriteLine("Recuerda que para que el contenido sea aceptado \ndebe programarse entre las 22 y las 5 horas.\n");
             break;
     }
 }
@@ -221,8 +227,6 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
         }
         return false;
     }
-
-
     if (!ClasificacionHorario(Clasificacion, HoraProgramada))
     {
         razon = "Horario no permitido para esa clasificación";
@@ -240,9 +244,7 @@ bool ValidacionTecnica(int TipoContenido, double DuracionMinutos, int Clasificac
     }
     razon = "Cumple todas las reglas técnicas";
     return true;
-
 }
-
 int opcion;
 bool esNumero;
 do
@@ -257,7 +259,6 @@ do
                 Console.Clear();
                 int tipoContenido = 0;
                 bool entradaValida = false;
-
                 while (!entradaValida)
                 {
                     Console.Write("Tipo de contenido: \n1. Pelicula\n2. Serie\n3. Documental\n4. Evento en vivo\n> ");
@@ -266,30 +267,29 @@ do
                     if (!entradaValida)
                     {
                         Console.Clear();
-                        Console.WriteLine("Opción inválida. Elige entre 1 y 4.\n");
+                        Console.WriteLine("Opción inválida. Elige entre las opciones disponibles.\n");
                     }
                 }
+
                 Console.Clear();
                 double duracionMinutos = 0;
                 bool entradaValida2 = false;
-
                 while (!entradaValida2)
                 {
                     Console.Clear();
                     ReglasDuracion(tipoContenido);
-                    Console.Write("Ingrese la duración: > ");
+                    Console.Write("Ingrese la duración:  ");
                     entradaValida2 = double.TryParse(Console.ReadLine(), out duracionMinutos) && duracionMinutos > 0 && duracionMinutos <= 240;
-
                     if (!entradaValida2)
                     {
                         Console.Clear();
                         Console.WriteLine("Ingrese una cifra en minutos valida\n");
                     }
                 }
+
                 Console.Clear();
                 int clasificacion = 0;
                 bool entradaValida3 = false;
-
                 while (!entradaValida3)
                 {
                     Console.Clear();
@@ -299,30 +299,28 @@ do
                     if (!entradaValida3)
                     {
                         Console.Clear();
-                        Console.WriteLine("Opción inválida. Elige entre 1 y 3.\n");
+                        Console.WriteLine("Opción inválida. Elige entre las opciones disponibles\n");
                     }
-
                 }
+
                 Console.Clear();
                 int horaProgramada = 0;
                 bool entradaValida4 = false;
-          
                 while (!entradaValida4)
                 {
                     clasificacionHora(clasificacion);
                     Console.Write("Ingrese horario:  ");
                     entradaValida4 = int.TryParse(Console.ReadLine(), out horaProgramada) && horaProgramada >= 0 && horaProgramada <= 23;
-
                     if (!entradaValida4)
                     {
                         Console.Clear();
                         Console.WriteLine("Opción inválida. Elija un horario valido.\n");
                     }
                 }
+
                 Console.Clear();
                 int nivelProduccion = 0;
                 bool entradaValida5 = false;
-
                 while (!entradaValida5)
                 {
                     ReglasProduccion(clasificacion);
@@ -335,8 +333,8 @@ do
                         Console.WriteLine("Opción inválida. Elija una opción valida\n");
                     }
                 }
-                Console.Clear();
 
+                Console.Clear();
                 bool respuesta = ValidacionTecnica(tipoContenido, duracionMinutos, clasificacion, horaProgramada, nivelProduccion, out string razon);
 
                 if (respuesta == true)
@@ -388,10 +386,12 @@ do
                 }
                 totalEvaluaciones++;
                 break;
+
             case 2:
                 Console.Clear();
                 Reglas();
                 break;
+
             case 3:
                 Console.Clear();
                 if (totalEvaluaciones == 0)
@@ -401,20 +401,14 @@ do
                 else
                 {
                     Console.WriteLine($"═════════════  Estadisticas  ═════════════");
-                    Console.WriteLine(
-                                     $"Total evaluados          : {totalEvaluaciones}\n" +
-                                     $"Publicados               : {publicados}\n" +
-                                     $"Rechazados               : {rechazados}\n" +
-                                     $"En revisión              : {enRevision}\n" +
-                                     $"Impacto predominante     : {ClasificacionImpacto(impactoAlto, impactoMedio, impactoBajo)}\n" +
-                                     $"Porcentaje de aprobación : {PorcentajeAprobacion(totalEvaluaciones, publicados):F2}%\n" +
-                                     $"═════════════════════════════════════════\n");
+                    Estadisticas();
+                    Console.WriteLine("═════════════════════════════════════════");
                 }
-               
                 break;
+
             case 4:
                 Console.Clear();
-                Console.WriteLine("Estadisticas reiniciadas");
+                Console.WriteLine("═══════════  Estadisticas reiniciadas  ═══════════");
                 totalEvaluaciones = 0;
                 publicados = 0;
                 rechazados = 0;
@@ -423,19 +417,13 @@ do
                 impactoAlto = 0;
                 impactoMedio = 0;
                 impactoBajo = 0;
-
                 break;
+          
             case 5:
                 Console.Clear();
                 Console.WriteLine("Saliendo del programa...");
                 Console.WriteLine($"═══════════ Resumen de hoy ═══════════");
-                Console.WriteLine(
-                                 $"Total evaluados          : {totalEvaluaciones}\n" +
-                                 $"Publicados               : {publicados}\n" +
-                                 $"Rechazados               : {rechazados}\n" +
-                                 $"En revisión              : {enRevision}\n" +
-                                 $"Impacto predominante     : {ClasificacionImpacto(impactoAlto, impactoMedio, impactoBajo)}\n" +
-                                 $"Porcentaje de aprobación : {PorcentajeAprobacion(totalEvaluaciones, publicados):F2}%");
+                Estadisticas();
                 string separador = "";
                 for (int i = 0; i < 38; i++)
                 {
@@ -445,17 +433,17 @@ do
                 Console.WriteLine($"Presione cualquier tecla para salir.");
                 Console.ReadKey();
                 break;
+
             default:
                 Console.Clear();
                 Console.WriteLine("Opción no válida. Por favor, elige una opción del menú.");
                 break;
         }
-    }   
+    }
     else
     {
         Console.Clear();
         Console.WriteLine("Entrada no válida. Por favor, ingresa un número.");
 
     }
-
 }while(opcion != 5 || !esNumero);
