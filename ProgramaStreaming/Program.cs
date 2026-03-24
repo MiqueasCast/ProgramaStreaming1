@@ -435,8 +435,13 @@ do
                                  $"Rechazados               : {rechazados}\n" +
                                  $"En revisión              : {enRevision}\n" +
                                  $"Impacto predominante     : {ClasificacionImpacto(impactoAlto, impactoMedio, impactoBajo)}\n" +
-                                 $"Porcentaje de aprobación : {PorcentajeAprobacion(totalEvaluaciones, publicados):F2}%\n" +
-                                 $"══════════════════════════════════════\n");
+                                 $"Porcentaje de aprobación : {PorcentajeAprobacion(totalEvaluaciones, publicados):F2}%");
+                string separador = "";
+                for (int i = 0; i < 38; i++)
+                {
+                    separador += "═";
+                }
+                Console.WriteLine(separador);
                 Console.WriteLine($"Presione cualquier tecla para salir.");
                 Console.ReadKey();
                 break;
@@ -445,7 +450,7 @@ do
                 Console.WriteLine("Opción no válida. Por favor, elige una opción del menú.");
                 break;
         }
-    }
+    }   
     else
     {
         Console.Clear();
