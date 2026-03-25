@@ -155,7 +155,7 @@ void clasificacionHora(int clasificacíon)
     switch (clasificacíon)
     {
         case 1:
-            Console.WriteLine("Ingrese hora programada en el rango de 0-23 horas\n");
+            Console.WriteLine("Ingrese hora programada \nen el rango de 0-23 horas\n");
             break;
         case 2:
             Console.WriteLine("Recuerda que para que el contenido sea aceptado \ndebe programarse entre las 6 y las 22 horas.\n");
@@ -257,7 +257,7 @@ do
                 bool entradaValida = false;
                 while (!entradaValida)
                 {
-                    Console.Write("Tipo de contenido: \n1. Pelicula\n2. Serie\n3. Documental\n4. Evento en vivo\n> ");
+                    Console.Write("═══════════ Tipo de contenido ═══════════ \n1. Pelicula\n2. Serie\n3. Documental\n4. Evento en vivo\n> ");
                     entradaValida = int.TryParse(Console.ReadLine(), out tipoContenido) && tipoContenido >= 1 && tipoContenido <= 4;
 
                     if (!entradaValida)
@@ -289,7 +289,7 @@ do
                 while (!entradaValida3)
                 {
                     Console.Clear();
-                    Console.Write("Clasificacion: \n1. Todo publico\n2. +13\n3. +18\n> ");
+                    Console.Write("═══════════ Clasificacion ═══════════ \n1. Todo publico\n2. +13\n3. +18\n> ");
                     entradaValida3 = int.TryParse(Console.ReadLine(), out clasificacion) && clasificacion >= 1 && clasificacion <= 3;
 
                     if (!entradaValida3)
@@ -304,6 +304,7 @@ do
                 bool entradaValida4 = false;
                 while (!entradaValida4)
                 {
+                    Console.Write("═══════════ Horario ═══════════\n");
                     clasificacionHora(clasificacion);
                     Console.Write("Ingrese horario: ");
                     entradaValida4 = int.TryParse(Console.ReadLine(), out horaProgramada) && horaProgramada >= 0 && horaProgramada <= 23;
@@ -320,7 +321,7 @@ do
                 while (!entradaValida5)
                 {
                     ReglasProduccion(clasificacion);
-                    Console.Write("Nivel de producción:\n1. Bajo\n2. Medio\n3. Alto\n> ");
+                    Console.Write("═══════════ Nivel de producción═══════════\n1. Bajo\n2. Medio\n3. Alto\n> ");
                     entradaValida5 = int.TryParse(Console.ReadLine(), out nivelProduccion) && nivelProduccion >= 1 && nivelProduccion <= 3;
 
                     if (!entradaValida5)
