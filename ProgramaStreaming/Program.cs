@@ -321,7 +321,7 @@ do
                 while (!entradaValida5)
                 {
                     ReglasProduccion(clasificacion);
-                    Console.Write("═══════════ Nivel de producción═══════════\n1. Bajo\n2. Medio\n3. Alto\n> ");
+                    Console.Write("═══════════ Nivel de producción ═══════════\n1. Bajo\n2. Medio\n3. Alto\n> ");
                     entradaValida5 = int.TryParse(Console.ReadLine(), out nivelProduccion) && nivelProduccion >= 1 && nivelProduccion <= 3;
 
                     if (!entradaValida5)
