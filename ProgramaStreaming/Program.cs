@@ -11,7 +11,7 @@ int impactoBajo = 0;
 // funciones
 void Menu()
 {
-    Console.Write("Menú: \n1. Evaluar nuevo contenido\n2. Mostrar reglas del sistema\n3. Mostrar estadisticas de inicio de sesion\n4. Reiniciar estadisticas \n5. Salir\n>");
+    Console.Write("═══════════════════ Menú ═══════════════════ \n1. Evaluar nuevo contenido\n2. Mostrar reglas del sistema\n3. Mostrar estadisticas de inicio de sesion\n4. Reiniciar estadisticas \n5. Salir\n>");
 }
 void Reglas()
 {
